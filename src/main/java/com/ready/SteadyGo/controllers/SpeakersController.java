@@ -3,6 +3,7 @@ package com.ready.SteadyGo.controllers;
 
 import com.ready.SteadyGo.models.Speaker;
 import com.ready.SteadyGo.repositories.SpeakerRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,20 @@ public class SpeakersController {
     @GetMapping
     public List<Speaker> list(){
         return  speakerRepository.findAll();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void  delete(@PathVariable Long id) {
+        //TODO: Check children records before deleting
+        speakerRepository.deleteById(id);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public Speaker  update(@PathVariable Long id, @RequestBody  Speaker session) {
+        //TODO: Add validation that all attributes are passed, else return 400
+        Speaker existingSession = speakerRepository.getById(id);
+        BeanUtils.copyProperties(session, existingSession, "speaker_id");
+        return speakerRepository.saveAndFlush(session);
     }
 
 }

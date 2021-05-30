@@ -1,9 +1,12 @@
 package com.ready.SteadyGo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "sessions")
+@JsonIgnoreProperties({"hibernateLazyInitializer","Handler"})
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
